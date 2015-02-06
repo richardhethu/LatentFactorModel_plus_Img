@@ -232,7 +232,7 @@ void latentfactor::saveModel(char* savePath)
 		fprintf(f, "%f", beta_user[u]);
 		if (u < nUsers - 1) fprintf(f, ", ");
 	}
-	fprintf(f, "]");
+	fprintf(f, "]\n");
 
 	fprintf(f, "  \"beta_item\":");
 	fprintf(f, "  [\n");
@@ -240,7 +240,7 @@ void latentfactor::saveModel(char* savePath)
 		fprintf(f, "%f", beta_item[i]);
 		if (i < nItems - 1) fprintf(f, ", ");
 	}
-	fprintf(f, "]");
+	fprintf(f, "]\n");
 
 	fprintf(f, "  \"gamma_user\":");
 	fprintf(f, "  [\n");
@@ -250,7 +250,7 @@ void latentfactor::saveModel(char* savePath)
 			if (u < nUsers - 1 || k < K - 1) fprintf(f, ", ");
 		}
 	}
-	fprintf(f, "]");
+	fprintf(f, "]\n");
 
 	fprintf(f, "  \"gamma_item\":");
 	fprintf(f, "  [\n");
@@ -260,7 +260,7 @@ void latentfactor::saveModel(char* savePath)
 			if (i < nItems - 1 || k < K - 1) fprintf(f, ", ");
 		}
 	}
-	fprintf(f, "]");
+	fprintf(f, "]\n");
 
 	fprintf(f, "  \"W\": [");
 	for (int w = 0; w < NW; w ++) {

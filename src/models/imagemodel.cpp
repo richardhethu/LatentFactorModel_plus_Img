@@ -62,13 +62,13 @@ void imagemodel::cleanUp()
 	delete [] W;
 	delete [] bestValidModel;
 
-	delete [] gradT;
 	for (int t = 0; t < NT; t ++) {
 		delete [] gradT[t];
 		delete [] k_space[t];
 		delete [] f_space[t];
 		getParametersFromVector(0, dalpha + t, dcm + t, dbeta_user + t, dbeta_item + t, dgamma_user + t, dgamma_item + t, dtheta_user + t, dU +t, FREE);
 	}
+	delete [] gradT;
 	delete [] dalpha;
 	delete [] dbeta_user;
 	delete [] dbeta_item;
@@ -422,7 +422,7 @@ void imagemodel::saveModel(char* savePath)
 		fprintf(f, "%f", beta_user[u]);
 		if (u < nUsers - 1) fprintf(f, ", ");
 	}
-	fprintf(f, "]");
+	fprintf(f, "]\n");
 
 	fprintf(f, "  \"beta_item\":");
 	fprintf(f, "  [\n");
@@ -430,7 +430,7 @@ void imagemodel::saveModel(char* savePath)
 		fprintf(f, "%f", beta_item[i]);
 		if (i < nItems - 1) fprintf(f, ", ");
 	}
-	fprintf(f, "]");
+	fprintf(f, "]\n");
 
 	fprintf(f, "  \"gamma_user\":");
 	fprintf(f, "  [\n");
@@ -440,7 +440,7 @@ void imagemodel::saveModel(char* savePath)
 			if (u < nUsers - 1 || k < K - 1) fprintf(f, ", ");
 		}
 	}
-	fprintf(f, "]");
+	fprintf(f, "]\n");
 
 	fprintf(f, "  \"gamma_item\":");
 	fprintf(f, "  [\n");
@@ -450,7 +450,7 @@ void imagemodel::saveModel(char* savePath)
 			if (i < nItems - 1 || k < K - 1) fprintf(f, ", ");
 		}
 	}
-	fprintf(f, "]");
+	fprintf(f, "]\n");
 
 	fprintf(f, "  \"theta_user\":");
 	fprintf(f, "  [\n");
@@ -460,7 +460,7 @@ void imagemodel::saveModel(char* savePath)
 			if (u < nUsers - 1 || k < K2- 1) fprintf(f, ", ");
 		}
 	}
-	fprintf(f, "]");
+	fprintf(f, "]\n");
 
 	fprintf(f, "  \"W\": [");
 	for (int w = 0; w < NW; w ++) {
