@@ -253,10 +253,10 @@ double imagemodel::dl(double* grad)
 
 			double z = predictMatch(itemA, itemB, k_space[tid], f_space[tid]);
 
-			llThread[tid] += eta * (label * z - safeLog(z));
+			llThread[tid] -= eta * (label * z - safeLog(z));
 
 			double frac = 1.0 / (1.0 + exp(-z));
-			double deri = eta * (label - frac);
+			double deri = - eta * (label - frac);
 
 			*(dcm[tid]) += deri;
 
@@ -271,7 +271,7 @@ double imagemodel::dl(double* grad)
 	int l2_start = 2 + nUsers + nItems;
 	if (lambda > 0) {
 		for (int w = l2_start; w < NW; w ++) {
-			llThread[0] -= lambda * W[w] * W[w];
+			llThread[0] += lambda * W[w] * W[w];
 		}
 	}
 	double llTotal = 0;
@@ -287,7 +287,7 @@ double imagemodel::dl(double* grad)
 	}
 	if (lambda > 0) {
 		for (int w = l2_start; w < NW; w ++) {
-			grad[w] -= 2 * lambda * W[w];
+			grad[w] += 2 * lambda * W[w];
 		}
 	}
 
