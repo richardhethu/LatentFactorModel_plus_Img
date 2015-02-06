@@ -12,15 +12,14 @@ FILE* fopen_(const char* p, const char* m)
 	return f;
 }
 
-edge::edge(int productFrom,
-           int productTo,
-           int label,
-           int reverseLabel) :
-    productFrom(productFrom),
-    productTo(productTo),
-    label(label),
-    reverseLabel(reverseLabel)
-  {}
+edge::edge(	int productFrom,
+			int productTo,
+			int label,
+			int reverseLabel) :
+				productFrom(productFrom),
+				productTo(productTo),
+				label(label),
+				reverseLabel(reverseLabel) {}
 
 edge::~edge()
 {

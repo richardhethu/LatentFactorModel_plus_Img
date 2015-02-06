@@ -1,7 +1,6 @@
 #pragma once
 #include "common.hpp"
 #include "corpus.hpp"
-
 #include "HLBFGS.h"
 
 void evalfunc(int N, double* x, double* prev_x, double* f, double* g);

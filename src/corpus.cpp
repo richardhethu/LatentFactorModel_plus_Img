@@ -19,7 +19,7 @@ corpus::corpus(char* voteFile, char* duplicatePath, char* duplicateImagePath, ch
 	loadGraph(graphPath, duplicatePath);
 	loadVotes(voteFile, userMin, itemMin);	// get users
 	
-	fprintf(stderr, "  \"nUsers\": %d, \"nItems (from img)\": %d, \"nVotes\": %d, \"nEdges\": %d,\n", nUsers, nItems, nVotes, nEdges);
+	fprintf(stderr, "\n  \"nUsers\": %d, \"nItems (from img)\": %d, \"nVotes\": %d, \"nEdges\": %d\n", nUsers, nItems, nVotes, nEdges);
 }
 
 corpus::~corpus()
@@ -35,7 +35,7 @@ corpus::~corpus()
 
 void corpus::loadVotes(char* voteFile, int userMin, int itemMin) 
 {
-	fprintf(stderr, "Loading votes from %s, userMin = %d, itemMin = %d  ", voteFile, userMin, itemMin);
+	fprintf(stderr, "  Loading votes from %s, userMin = %d, itemMin = %d  ", voteFile, userMin, itemMin);
 	
 	map<string, int> uCounts;
 	map<string, int> bCounts;
@@ -122,6 +122,8 @@ void corpus::loadVotes(char* voteFile, int userMin, int itemMin)
 	}
 	in2.close();
 
+	fprintf(stderr, "\n");
+
 	random_shuffle(V.begin(), V.end());
 	nVotes = V.size();
 }
@@ -140,7 +142,7 @@ void corpus::loadImgFeatures(char* featurePath, char* duplicateImagePath)
 	inDup.close();
 
 	FILE* f = fopen_(featurePath, "rb");
-	fprintf(stderr, "Loading image features from %s", featurePath);
+	fprintf(stderr, "\n  Loading image features from %s", featurePath);
 
 	double ma = 58.388599; // Largest feature observed
 	float* feat = new float [imFeatureDim];
@@ -196,6 +198,8 @@ void corpus::loadImgFeatures(char* featurePath, char* duplicateImagePath)
 /// Parse G product graphs
 void corpus::loadGraph(char* graphPath, char* duplicatePath)
 {
+	fprintf(stderr, "  Loading graph from %s", graphPath);
+
 	map<string, string> duplicates;
 	igzstream inDup;
 	inDup.open(duplicatePath);
@@ -213,6 +217,7 @@ void corpus::loadGraph(char* graphPath, char* duplicatePath)
 	string edgename;
 	string line;
 	nEdges = 0;
+	int count = 0;
 
 	while (getline(in, line)) {
 		stringstream ss(line);
@@ -237,8 +242,14 @@ void corpus::loadGraph(char* graphPath, char* duplicatePath)
 			nodesInSomeEdge.insert(bid1);
 			nodesInSomeEdge.insert(bid2);
 		}
+
+		/* print process */
+		if ((++ count) % 10000 == 0) {
+			fprintf(stderr, ".");
+			fflush(stderr);
+		}
 	}
-	fprintf(stderr, "\"%s\": %d\n", edgename.c_str(), nEdges);
+	fprintf(stderr, "\t\"%s\": %d\n", edgename.c_str(), nEdges);
 
 	for (set<int>::iterator it = nodesInSomeEdge.begin(); it != nodesInSomeEdge.end(); it ++) {
 		nodesInSomeEdgeV.push_back(*it);
@@ -251,7 +262,7 @@ void corpus::initEdges()
 {
 	set<pair<int,int> >* G = &productGraph;
 
-	fprintf(stderr, "Generating edges ");
+	fprintf(stderr, "  Generating edges ");
 	int count = 0;
 	for (set<pair<int,int> >::iterator it = G->begin(); it != G->end(); it ++) {
 		int productFrom = it->first;
@@ -276,7 +287,7 @@ void corpus::initEdges()
 		}
 	}
 
-	fprintf(stderr, "\nGenerating non-edges ");
+	fprintf(stderr, "\n  Generating non-edges ");
 
 	int NN = nodesInSomeEdgeV.size();
 	count = 0;
@@ -306,6 +317,8 @@ void corpus::initEdges()
 			fflush(stderr);
 		}
 	}
+
+	fprintf(stderr, "\n");
 
 	random_shuffle(M.begin(), M.end());
 	nEdges = M.size();

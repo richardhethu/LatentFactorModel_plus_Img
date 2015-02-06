@@ -125,7 +125,8 @@ double latentfactor::prediction(int user, int item)
 
 double latentfactor::dl(double* grad)
 {
-
+	double l_dlStart = clock_();
+	
 #pragma omp parallel for
 	for (int w = 0; w < NW; w ++) {
 		grad[w] = 0;
@@ -189,6 +190,7 @@ double latentfactor::dl(double* grad)
 		}
 	}
 
+	fprintf(stderr, "took %f\n", clock_() - l_dlStart);
 	return llTotal;
 }
 

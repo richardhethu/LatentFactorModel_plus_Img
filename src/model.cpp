@@ -13,10 +13,11 @@ void evalfunc(int N, double* x, double* prev_x, double* f, double* g)
 /// Required function by HLBFGS library: prints progress
 void newiteration(int iter, int call_iter, double* x, double* f, double* g, double* gnorm)
 {
-	fprintf(stderr, "X");
+	fprintf(stderr, ".");
 	fflush(stderr);
 
 	if (iter % 5 == 0) {
+		fprintf(stderr, "Iter: %d, call_iter: %d \n", iter, call_iter);
 		double train, valid, test;
 		gModel->trainValidTestError(&train, &valid, &test);
 		if (valid < gModel->bestValid) {
@@ -114,6 +115,6 @@ void model::copyBestValidModel()
 	for(int w = 0; w < NW; w ++) {
 		bestValidModel[w] = W[w];
 	}
-	fprintf(stderr, "Model copied. #para: %d\n", NW);
+	fprintf(stderr, "  Model copied. #para: %d\n", NW);
 	fflush(stderr);
 }

@@ -15,6 +15,7 @@
 #include "algorithm"
 #include "sstream"
 #include "gzstream.h"
+#include "sys/time.h"
 
 /// Safely open a file
 FILE* fopen_(const char* p, const char* m);
@@ -60,6 +61,13 @@ inline double safeLog(double p)
 		return p;
 	}
 	return x;
+}
+
+inline double clock_(void)
+{
+	timeval tim;
+	gettimeofday(&tim, NULL);
+	return tim.tv_sec + (tim.tv_usec / 1000000.0);
 }
 
 class edge

@@ -1,5 +1,4 @@
 #include "imagemodel.hpp"
-#include <ctime>
 
 using namespace std;
 
@@ -188,6 +187,7 @@ double imagemodel::predictMatch(int itemIdA, int itemIdB, double* k_space, doubl
 
 double imagemodel::dl(double* grad)
 {
+	double l_dlStart = clock_();
 
 #pragma omp parallel for
 	for (int w = 0; w < NW; w ++) {
@@ -291,6 +291,8 @@ double imagemodel::dl(double* grad)
 		}
 	}
 
+	fprintf(stderr, "took %f\n", clock_() - l_dlStart);
+	
 	return llTotal;
 }
 
