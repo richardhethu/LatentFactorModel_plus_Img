@@ -17,9 +17,16 @@ void experiment_latentfactor(char* reviewPath, char* duplicatePath, char* duplic
 	M_latentfactor.init();
 	M_latentfactor.train(iter);
 	M_latentfactor.trainValidTestError(&train, &valid, &test);
-	M_latentfactor.cleanUp();
 
 	fprintf(stderr, "}\n");
+	fflush(stderr);
+
+	char* mp = new char [10000];
+	sprintf(mp, "lat__K_%d_lambda_%f_iter_%d.txt", K, lambda, iter);
+	M_latentfactor.saveModel(mp);
+	delete [] mp;
+
+	M_latentfactor.cleanUp();
 }
 
 void experiment_latExtention(char* reviewPath, char* duplicatePath, char* duplicateImgPath, char* featurePath, char* graphPath, int K, int K2, double eta, double lambda, int iter)
@@ -35,9 +42,16 @@ void experiment_latExtention(char* reviewPath, char* duplicatePath, char* duplic
 	M_image.init();
 	M_image.train(iter);
 	M_image.trainValidTestError(&train, &valid, &test);
-	M_image.cleanUp();
 
 	fprintf(stderr, "}\n");
+	fflush(stderr);
+
+	char* mp = new char [10000];
+	sprintf(mp, "imageModel__K_%d_K2_%d_eta_%.2f_lambda_%.2f_iter_%d.txt", K, K2, eta, lambda, iter);
+	M_image.saveModel(mp);
+	delete [] mp;
+
+	M_image.cleanUp();
 }
 
 int main(int argc, char** argv)
