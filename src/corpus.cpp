@@ -227,7 +227,6 @@ void corpus::loadGraph(char* graphPath, char* duplicatePath)
 		}
 		int bid1 = itemIds[n1];
 		while (ss >> n2) {
-			nEdges ++;
 			if (itemIds.find(n2) == itemIds.end()) {
 				if (duplicates.find(n2) != duplicates.end()) {
 					n2 = duplicates[n2];
@@ -238,6 +237,7 @@ void corpus::loadGraph(char* graphPath, char* duplicatePath)
 			}
 			int bid2 = itemIds[n2];
 
+			nEdges ++;
 			productGraph.insert(make_pair(bid1, bid2));
 			nodesInSomeEdge.insert(bid1);
 			nodesInSomeEdge.insert(bid2);
