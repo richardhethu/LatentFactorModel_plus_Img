@@ -17,6 +17,7 @@ void experiment_latentfactor(char* reviewPath, char* duplicatePath, char* duplic
 	M_latentfactor.init();
 	M_latentfactor.train(iter);
 	M_latentfactor.trainValidTestError(&train, &valid, &test);
+	M_latentfactor.detailedTestError();
 
 	fprintf(stderr, "}\n");
 	fflush(stderr);
@@ -42,6 +43,7 @@ void experiment_latExtention(char* reviewPath, char* duplicatePath, char* duplic
 	M_image.init();
 	M_image.train(iter);
 	M_image.trainValidTestError(&train, &valid, &test);
+	M_image.detailedTestError();
 
 	fprintf(stderr, "}\n");
 	fflush(stderr);
