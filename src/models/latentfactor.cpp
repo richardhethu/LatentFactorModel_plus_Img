@@ -61,12 +61,12 @@ void latentfactor::cleanUp()
 	delete [] W;
 	delete [] bestValidModel;
 
-	delete [] gradT;
 	for (int t = 0; t < NT; t ++) {
 		delete [] gradT[t];
 		getParametersFromVector(0, dalpha + t, dbeta_user + t, dbeta_item + t, dgamma_user + t, dgamma_item + t, FREE);
 	}
 	delete [] dalpha;
+	delete [] gradT;
 	delete [] dbeta_user;
 	delete [] dbeta_item;
 	delete [] dgamma_user;
