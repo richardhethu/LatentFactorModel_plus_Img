@@ -145,6 +145,15 @@ void imagemodel::getParametersFromVector(	double*   g,
 	}
 }
 
+double imagemodel::prediction(int user, int item)
+{
+	double* temp_space = new double[K2];
+	double res = predict(user, item, temp_space);
+	delete [] temp_space;
+	
+	return res;
+}
+
 double imagemodel::predict(int user, int item, double* k_space)
 {
 	for (int k = 0; k < K2; ++k) {

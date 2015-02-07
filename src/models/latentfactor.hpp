@@ -11,7 +11,7 @@ public:
 	void init();
 	void cleanUp();
 
-	double prediction(int user, int item);
+	virtual double prediction(int user, int item);
 	double dl(double* grad);
 	void getParametersFromVector(	double* g,
 									double** alpha,
@@ -22,6 +22,7 @@ public:
 									action_t action);
 	void train(int gradIterations);
 	void saveModel(char* path);
+	void detailedTestError();
 
 	/* auxiliary variables */
 	double*  alpha;

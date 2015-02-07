@@ -22,6 +22,7 @@ public:
 									double*** U,
 									action_t action);
 
+	double prediction(int user, int item);
 	double predict(int user, int item, double* k_space);
 	double predictMatch(int itemIdA, int itemIdB, double* k_space, double* f_space);	
 	double dl(double* grad);

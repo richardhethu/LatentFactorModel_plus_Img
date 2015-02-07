@@ -271,3 +271,56 @@ void latentfactor::saveModel(char* savePath)
 	fprintf(f, "}\n");
 	fclose(f);
 }
+
+void latentfactor::detailedTestError()
+{
+	int* vote_per_item = new int[nItems];
+	for (int i = 0; i < nItems; ++i) {
+		vote_per_item[i] = 0;
+	}
+	for (int x = 0; x < validStart; x ++) {
+		vote* vi = corp->V.at(x);
+		int item = vi->item;
+		vote_per_item[item] ++;
+	}
+	
+	int bin_num = 100;
+	int bin_size = 3;
+	double* bin = new double[bin_num];
+	int* bin_counter = new int[bin_num];
+	for(int i = 0; i < bin_num; i ++) {
+		bin[i] = 0;
+		bin_counter[i] = 0;
+	}
+
+	for (int i = testStart; i < nVotes; i ++) {
+		vote* v = corp->V.at(i);
+		double p = prediction(v->user, v->item);
+		double se = square(v->value - p);
+
+		int idx = vote_per_item[v->item] / bin_size;
+		if (idx >= bin_num) {
+			idx = bin_num - 1;
+		}
+
+		bin[idx] += se;
+		bin_counter[idx] ++;
+	}
+
+	double sum_se = 0;
+	for (int i = 0; i < bin_num; i ++) {
+		sum_se += bin[i];
+	}
+
+	fprintf(stderr, "\n\n=== Test Error Distribution (in order of \"cold-to-hot\" items) ===\n");
+	for (int i = 0; i < bin_num; i ++) {
+		fprintf(stderr, "%d - %d: MSE = %.4f, Percentage = %.4f%%\n", \
+				bin_size * i, bin_size * (i + 1) - 1, bin[i] / bin_counter[i], bin[i] / sum_se * 100);
+	}
+	fprintf(stderr, "Sanity check: overall test MSE = %f\n", sum_se / (nVotes - testStart));
+	fflush(stderr);
+
+	delete [] vote_per_item;
+	delete [] bin;
+	delete [] bin_counter;
+}
